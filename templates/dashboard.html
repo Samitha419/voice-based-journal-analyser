@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+    <h2>Voice Journal</h2>
+
+    <button onclick="showNewEntry()">+ New Entry</button>
+
+    <form action="/search">
+        <input type="text" name="q" placeholder="Search">
+    </form>
+
+    <h3>Saved Entries</h3>
+    {% for entry in entries %}
+        <a href="/entry/{{ entry.id }}" class="entry-item">
+            {{ entry.title }}
+            <br>
+            <small>{{ entry.sentiment }}</small>
+        </a>
+    {% endfor %}
+
+    <hr>
+
+    <h3>Profile</h3>
+    <p>{{ user.full_name }}</p>
+    <p>{{ user.email }}</p>
+
+    <a href="/logout">Logout</a>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content" id="mainContent">
+
+    <!-- Toggle Button -->
+    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+    <h2>Dashboard</h2>
+
+    <!-- NEW ENTRY FORM (Hidden) -->
+    <div id="newEntryForm" style="display:none;">
+        <form method="POST" action="/new_entry">
+            <input type="text" name="title" placeholder="Entry Title" required>
+            <textarea id="content" name="content" placeholder="Write your thoughts..." required></textarea>
+
+            <button type="button" onclick="startRecording()">🎤 Record</button>
+            <button type="submit">Save Entry</button>
+        </form>
+    </div>
+
+    <!-- SELECTED ENTRY DISPLAY -->
+    {% if selected_entry %}
+    <div class="entry-detail">
+        <h2>{{ selected_entry.title }}</h2>
+        <p><strong>Sentiment:</strong> {{ selected_entry.sentiment }}</p>
+        <p>{{ selected_entry.content }}</p>
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

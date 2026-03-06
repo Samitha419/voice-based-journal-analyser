@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Profile</title>
+</head>
+<body class="light">
+<div class="topbar">
+    <h2>Profile Settings</h2>
+    <div class="profile">
+        {{ username }}
+        <p><strong>Full Name:</strong> {{ full_name }}</p>
+        <p><strong>Email:</strong> {{ email }}</p>
+        <p><strong>Phone:</strong> {{ phone }}</p>
+        <a href="/dashboard">Dashboard</a> |
+        <a href="/logout">Logout</a>
+    </div>
+</div>
+<div class="profile-container">
+    <h3>Change Settings</h3>
+    <form method="POST" action="/profile">
+        <label>Theme:</label>
+        <select name="theme">
+            <option value="light" {% if settings and settings[0]=='light' %}selected{% endif %}>Light</option>
+            <option value="dark" {% if settings and settings[0]=='dark' %}selected{% endif %}>Dark</option>
+        </select><br><br>
+        <label>Main Color:</label>
+        <input type="color" name="color" value="{{ settings[1] if settings else '#667eea' }}"><br><br>
+        <label>Font Size:</label>
+        <input type="number" name="fontsize" value="{{ settings[2] if settings else 16 }}"><br><br>
+        <button type="submit">Save Settings</button>
+    </form>
+</div>
+</body>
+</html>
